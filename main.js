@@ -72,6 +72,7 @@ function getList() {
 }
 
 function playChannel(ch, s) {
+    console.log("Playing channel:", ch);
     if (ch < 10) {
         channelName.textContent = "CH 0" + ch;
     } else {
@@ -82,27 +83,21 @@ function playChannel(ch, s) {
     control.style.display = "flex";
     smpte.style.opacity = 0;
 
-    // Comment out sync() function and directly load a default video
-    // if (sync(ch)) {
-    //     player.loadVideoById(playingNow, startAt);
-    //     player.setVolume(100);
-    //     player.setPlaybackRate(1);
-    // } else if (s) {
-    //     getList();
-    // } else {
-    //     smpte.style.opacity = 1;
-    // }
-
-    // Load the first video from the current channel without syncing
-    if (vids[ch] && vids[ch].length > 0) {
-        let video = vids[ch][0];  // Get the first video for the channel
-        player.loadVideoById(video.id);
+    if (vids && vids[ch] && vids[ch].length > 0) {
+        console.log("Loading video:", vids[ch][0]);
+        let video = vids[ch][0];
+        playingNow = video.id;
+        startAt = 0;
+        player.loadVideoById(playingNow, startAt);
         player.setVolume(100);
         player.setPlaybackRate(1);
     } else {
-        smpte.style.opacity = 1; // If no video is found, display color bars
+        console.log("No video found for channel", ch);
+        smpte.style.opacity = 1;
     }
 }
+
+
 
 
  function sync(ch) {
