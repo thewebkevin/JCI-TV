@@ -196,16 +196,17 @@ function onPlayerReady(event) {
 
 function onPlayerStateChange(event) {
     staticNoise.style.opacity = 1;
-    if (event.data == -1) {
-        // Video hasn't started yet
-        videoId.textContent = "UNSTARTED";
-    } else if (event.data == 0) {
-        // Video ended
-        videoId.textContent = "ENDED";
-        if (Object.keys(vids[channelNumber]).length == playingNowOrder) {
-            getList(); // Reload list when the last video ends
+
+    if (event.data == 0) {  // Video ended
+        console.log("Video ended");
+        let channelVideos = Object.values(vids[channelNumber]);
+        if (playingNowOrder < channelVideos.length - 1) {
+            // Play next video in the channel
+            playChannel(channelNumber, playingNowOrder + 1);
         } else {
-            playChannel(channelNumber, false); // Play next video in the channel
+            // Restart the channel from the first video if at the end
+            console.log("End of channel videos. Restarting channel...");
+            playChannel(channelNumber, 0);
         }
     } else if (event.data == 1) {
         // Video is playing
@@ -233,7 +234,6 @@ function onPlayerStateChange(event) {
         videoId.textContent = "VIDEO CUED";
     }
 }
-
 
 
 function onAutoplayBlocked() {
