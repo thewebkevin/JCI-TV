@@ -81,30 +81,43 @@ function playChannel(ch, s) {
 
     control.style.display = "flex";
     smpte.style.opacity = 0;
-    if (sync(ch)) {
-        player.loadVideoById(playingNow, startAt);
+
+    // Comment out sync() function and directly load a default video
+    // if (sync(ch)) {
+    //     player.loadVideoById(playingNow, startAt);
+    //     player.setVolume(100);
+    //     player.setPlaybackRate(1);
+    // } else if (s) {
+    //     getList();
+    // } else {
+    //     smpte.style.opacity = 1;
+    // }
+
+    // Load the first video from the current channel without syncing
+    if (vids[ch] && vids[ch].length > 0) {
+        let video = vids[ch][0];  // Get the first video for the channel
+        player.loadVideoById(video.id);
         player.setVolume(100);
         player.setPlaybackRate(1);
-    } else if (s) {
-        getList();
     } else {
-        smpte.style.opacity = 1;
+        smpte.style.opacity = 1; // If no video is found, display color bars
     }
 }
 
-// function sync(ch) {
-//    playingNow = 0;
-//    let t = Math.floor(Date.now() / 1000);
-//    for (let i in vids[ch]) {
-//        if (t >= vids[ch][i].playAt && t < vids[ch][i].playAt + vids[ch][i].duration) {
-//            playingNowOrder = i;
-//            playingNow = vids[ch][i].id;
-//            startAt = t - vids[ch][i].playAt;
-//            return true;
-//        }
-//    }
-//    return false;
-//}
+
+ function sync(ch) {
+    playingNow = 0;
+    let t = Math.floor(Date.now() / 1000);
+    for (let i in vids[ch]) {
+        if (t >= vids[ch][i].playAt && t < vids[ch][i].playAt + vids[ch][i].duration) {
+            playingNowOrder = i;
+            playingNow = vids[ch][i].id;
+            startAt = t - vids[ch][i].playAt;
+            return true;
+        }
+    }
+    return false;
+}
 
 var scriptUrl = 'https://www.youtube.com/s/player/d2e656ee/www-widgetapi.vflset/www-widgetapi.js';
 try {
