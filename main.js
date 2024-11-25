@@ -62,21 +62,13 @@ function resizePlayer() {
 }
 
 function getList() {
-    vids = {};
-    let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            r = JSON.parse(this.responseText);
-            vids = r;
+    fetch('./list.json')
+        .then(response => response.json())
+        .then(data => {
+            vids = data;
             playChannel(channelNumber, false);
-        }
-    };
-    xhttp.open("GET", "./list.json", true); // Relative path to local file
-    xhttp.send();
-
-    // Old external list fetching system (commented out)
-    // xhttp.open("GET", "https://ytch.xyz/list.json?t=" + Date.now());
-    // xhttp.send();
+        })
+        .catch(error => console.error('Error loading list.json:', error));
 }
 
 function playChannel(ch, s) {
