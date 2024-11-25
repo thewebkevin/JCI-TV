@@ -72,16 +72,16 @@ function getList() {
         .catch(error => console.error('Error loading list.json:', error));
 }
 
-
 function playChannel(ch, s) {
     console.log("Playing channel:", ch);
     
     if (vids && vids[ch]) {
-        console.log("Videos for channel:", vids[ch]); // See if there is an array of videos for the channel
+        let channelVideos = Object.values(vids[ch]);  // Convert the object to an array
+        console.log("Videos for channel:", channelVideos);
 
-        if (vids[ch].length > 0) {
-            let video = vids[ch][0];  // Get the first video for the channel
-            console.log("Loading video:", video); // Check video data
+        if (channelVideos.length > 0) {
+            let video = channelVideos[0];  // Get the first video for the channel
+            console.log("Loading video:", video);
             
             playingNow = video.id;  // Set current video ID
             startAt = 0;            // Start at the beginning of the video
@@ -97,10 +97,6 @@ function playChannel(ch, s) {
         smpte.style.opacity = 1; // Show SMPTE color bars if no video found
     }
 }
-
-
-
-
 
  function sync(ch) {
     playingNow = 0;
