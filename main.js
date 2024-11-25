@@ -66,36 +66,38 @@ function getList() {
         .then(response => response.json())
         .then(data => {
             vids = data;
+            console.log("Loaded video list:", vids); // Check if vids is populated correctly
             playChannel(channelNumber, false);
         })
         .catch(error => console.error('Error loading list.json:', error));
 }
 
+
 function playChannel(ch, s) {
     console.log("Playing channel:", ch);
-    if (ch < 10) {
-        channelName.textContent = "CH 0" + ch;
-    } else {
-        channelName.textContent = "CH " + ch;
-    }
-    channelName.textContent += " - " + getChannelName(ch);
+    
+    if (vids && vids[ch]) {
+        console.log("Videos for channel:", vids[ch]); // See if there is an array of videos for the channel
 
-    control.style.display = "flex";
-    smpte.style.opacity = 0;
-
-    if (vids && vids[ch] && vids[ch].length > 0) {
-        console.log("Loading video:", vids[ch][0]);
-        let video = vids[ch][0];
-        playingNow = video.id;
-        startAt = 0;
-        player.loadVideoById(playingNow, startAt);
-        player.setVolume(100);
-        player.setPlaybackRate(1);
+        if (vids[ch].length > 0) {
+            let video = vids[ch][0];  // Get the first video for the channel
+            console.log("Loading video:", video); // Check video data
+            
+            playingNow = video.id;  // Set current video ID
+            startAt = 0;            // Start at the beginning of the video
+            player.loadVideoById(playingNow, startAt);
+            player.setVolume(100);
+            player.setPlaybackRate(1);
+        } else {
+            console.log("No video found for channel", ch);
+            smpte.style.opacity = 1; // Show SMPTE color bars if no video found
+        }
     } else {
-        console.log("No video found for channel", ch);
-        smpte.style.opacity = 1;
+        console.log("No data for channel", ch);
+        smpte.style.opacity = 1; // Show SMPTE color bars if no video found
     }
 }
+
 
 
 
