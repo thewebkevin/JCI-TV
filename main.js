@@ -71,8 +71,12 @@ function getList() {
             playChannel(channelNumber, false);
         }
     };
-    xhttp.open("GET", "https://ytch.xyz/list.json?t=" + Date.now());
+    xhttp.open("GET", "./list.json", true); // Relative path to local file
     xhttp.send();
+
+    // Old external list fetching system (commented out)
+    // xhttp.open("GET", "https://ytch.xyz/list.json?t=" + Date.now());
+    // xhttp.send();
 }
 
 function playChannel(ch, s) {
@@ -256,6 +260,10 @@ function onPlayerStateChange(event) {
 
 function onAutoplayBlocked() {
     console.log("Autoplay blocked!");
+}
+
+function onPlayerReady(event) {
+    getList();
 }
 
 function toggleMute() {
