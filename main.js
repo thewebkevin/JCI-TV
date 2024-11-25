@@ -197,23 +197,18 @@ function onPlayerReady(event) {
 function onPlayerStateChange(event) {
     staticNoise.style.opacity = 1;
     if (event.data == -1) {
+        // Video hasn't started yet
         videoId.textContent = "UNSTARTED";
     } else if (event.data == 0) {
+        // Video ended
         videoId.textContent = "ENDED";
         if (Object.keys(vids[channelNumber]).length == playingNowOrder) {
-            getList();
+            getList(); // Reload list when the last video ends
         } else {
-            playChannel(channelNumber, false);
+            playChannel(channelNumber, false); // Play next video in the channel
         }
     } else if (event.data == 1) {
-        // Remove all references to `sync()`
-        let _startAt = startAt;
-        let _playingNow = playingNow;
-        let _playingNowOrder = playingNowOrder;
-
-        // Directly load video if necessary, without synchronization
-        player.loadVideoById(playingNow, startAt);
-
+        // Video is playing
         staticNoise.style.opacity = 0;
         videoId.textContent = playingNow;
 
@@ -228,13 +223,17 @@ function onPlayerStateChange(event) {
 
         document.getElementById("title").innerText = videoData.title + " BY " + videoData.author;
     } else if (event.data == 2) {
+        // Video paused
         videoId.textContent = "PAUSED";
     } else if (event.data == 3) {
+        // Video buffering
         videoId.textContent = "BUFFERING";
     } else if (event.data == 5) {
+        // Video cued
         videoId.textContent = "VIDEO CUED";
     }
 }
+
 
 
 function onAutoplayBlocked() {
