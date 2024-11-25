@@ -206,20 +206,14 @@ function onPlayerStateChange(event) {
             playChannel(channelNumber, false);
         }
     } else if (event.data == 1) {
+        // Remove all references to `sync()`
         let _startAt = startAt;
         let _playingNow = playingNow;
         let _playingNowOrder = playingNowOrder;
-        if (sync(channelNumber)) {
-            if (_playingNow == playingNow && _playingNowOrder == playingNowOrder) {
-                if (Math.abs(_startAt - startAt) > 7) {
-                    player.seekTo(startAt);
-                }
-            } else {
-                player.loadVideoById(playingNow, startAt);
-            }
-        } else {
-            getList();
-        }
+
+        // Directly load video if necessary, without synchronization
+        player.loadVideoById(playingNow, startAt);
+
         staticNoise.style.opacity = 0;
         videoId.textContent = playingNow;
 
@@ -241,6 +235,7 @@ function onPlayerStateChange(event) {
         videoId.textContent = "VIDEO CUED";
     }
 }
+
 
 function onAutoplayBlocked() {
     console.log("Autoplay blocked!");
