@@ -19,37 +19,11 @@ if (localStorage.getItem("storedChannelNumber") === null) {
     channelNumber = Number(localStorage.getItem("storedChannelNumber"));
 }
 
-control.addEventListener("mouseover", function () {
-    control.style.animation = 0;
-});
-
-control.addEventListener("mouseleave", function () {
-    if (isMin) {
-        control.style.animation = "fadeout 3s forwards";
-    }
-});
-
 function getChannelName(channel) {
     let name = "...";
     switch (channel) {
-        case 1: name = "Sci & Tech"; break;
-        case 2: name = "Travel"; break;
-        case 3: name = "Food"; break;
-        case 4: name = "Architecture"; break;
-        case 5: name = "Film"; break;
-        case 6: name = "Documentaries"; break;
-        case 7: name = "Comedy"; break;
-        case 8: name = "Music"; break;
-        case 9: name = "Autos"; break;
-        case 10: name = "News"; break;
-        case 11: name = "UFC"; break;
-        case 12: name = "Podcasts"; break;
-        case 13: name = "Gaming"; break;
-        case 14: name = "Literature"; break;
-        case 15: name = "Cooking"; break;
-        case 16: name = "Short Films"; break;
-        case 17: name = "Game Shows"; break;
-        case 18: name = "Cartoons"; break;
+        case 1: name = "WWII in 2"; break;
+        case 2: name = "From the Collection"; break;
     }
     return name;
 }
@@ -72,30 +46,40 @@ function getList() {
         .catch(error => console.error('Error loading list.json:', error));
 }
 
+let currentChannel = null;
+let currentVideoIndex = 0;
+
 function playChannel(ch, s) {
+    currentChannel = ch;
+    currentVideoIndex = 0;
     console.log("Playing channel:", ch);
     
     if (vids && vids[ch]) {
-        let channelVideos = Object.values(vids[ch]);  // Convert the object to an array
+        let channelVideos = Object.values(vids[ch].videos);
         console.log("Videos for channel:", channelVideos);
 
         if (channelVideos.length > 0) {
-            let video = channelVideos[0];  // Get the first video for the channel
+            let video = channelVideos[currentVideoIndex];
             console.log("Loading video:", video);
             
-            playingNow = video.id;  // Set current video ID
-            startAt = 0;            // Start at the beginning of the video
+            playingNow = video.id;
+            startAt = 0;
             player.loadVideoById(playingNow, startAt);
             player.setVolume(100);
             player.setPlaybackRate(1);
+            
+            // Update the title
+            document.getElementById('title').textContent = video.title;
         } else {
             console.log("No video found for channel", ch);
-            smpte.style.opacity = 1; // Show SMPTE color bars if no video found
+            smpte.style.opacity = 1;
         }
     } else {
         console.log("No data for channel", ch);
-        smpte.style.opacity = 1; // Show SMPTE color bars if no video found
+        smpte.style.opacity = 1;
     }
+    
+    channelName.textContent = getChannelName(ch);
 }
 
 var scriptUrl = 'https://www.youtube.com/s/player/d2e656ee/www-widgetapi.vflset/www-widgetapi.js';
@@ -171,7 +155,8 @@ function onYouTubeIframeAPIReady() {
             'controls': 0,
             'rel': 0,
             'autoplay': 1,
-            'mute': 1
+            'mute': 1,
+            'modestbranding': 1,
         },
         events: {
             'onReady': onPlayerReady,
@@ -195,46 +180,23 @@ function onPlayerReady(event) {
 }
 
 function onPlayerStateChange(event) {
-    staticNoise.style.opacity = 1;
-
-    if (event.data == 0) {  // Video ended
-        console.log("Video ended");
-        let channelVideos = Object.values(vids[channelNumber]);
-        if (playingNowOrder < channelVideos.length - 1) {
-            // Play next video in the channel
-            playChannel(channelNumber, playingNowOrder + 1);
-        } else {
-            // Restart the channel from the first video if at the end
-            console.log("End of channel videos. Restarting channel...");
-            playChannel(channelNumber, 0);
+    if (event.data === YT.PlayerState.ENDED) {
+        let channelVideos = Object.values(vids[currentChannel].videos); // Assuming currentChannel is the active channel
+        currentVideoIndex++;
+        if (currentVideoIndex >= channelVideos.length) {
+            currentVideoIndex = 0; // Restart from the first video
         }
-    } else if (event.data == 1) {
-        // Video is playing
-        staticNoise.style.opacity = 0;
-        videoId.textContent = playingNow;
-
-        videoData = player.getVideoData();
-        console.log(videoData);
-
-        if (!watchHistory[channelNumber]) {
-            watchHistory[channelNumber] = new Set([videoData.author]);
-        } else {
-            watchHistory[channelNumber].add(videoData.author);
-        }
-
-        document.getElementById("title").innerText = videoData.title + " BY " + videoData.author;
-    } else if (event.data == 2) {
-        // Video paused
-        videoId.textContent = "PAUSED";
-    } else if (event.data == 3) {
-        // Video buffering
-        videoId.textContent = "BUFFERING";
-    } else if (event.data == 5) {
-        // Video cued
-        videoId.textContent = "VIDEO CUED";
+        let nextVideo = channelVideos[currentVideoIndex];
+        playingNow = nextVideo.id;
+        startAt = 0;
+        player.loadVideoById(playingNow, startAt);
+        player.setVolume(100);
+        player.setPlaybackRate(1);
+        
+        // Update the title
+        document.getElementById('title').textContent = nextVideo.title;
     }
 }
-
 
 function onAutoplayBlocked() {
     console.log("Autoplay blocked!");
@@ -292,8 +254,8 @@ function toggleControl() {
     }
 }
 
-
 function togglePower() {
+    let powerButton = document.querySelector(".power-button"); // Assuming the power button has a class of .power-button
     if (isOn) {
         isOn = false;
         player.pauseVideo();
@@ -305,6 +267,7 @@ function togglePower() {
         playChannel(channelNumber, true);
     }
 }
+
 function toggleInfo() {
     if (showInfo) {
         showInfo = false;

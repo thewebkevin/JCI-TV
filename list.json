@@ -1,11 +1,32 @@
 {
-	"1": [
-	  { "id": "gKyWVLCjuYA", "duration": 149 },
-	  { "id": "4yjqPlJ88NQ", "duration": 169 }
-	],
-	"2": [
-	  { "id": "gKyWVLCjuYA", "duration": 149 },
-	  { "id": "4yjqPlJ88NQ", "duration": 169 }
-	]
-  }
-  
+    "1": {
+        "name": "WWII in 2",
+        "videos": {
+            "1": {
+                "id": "4yjqPlJ88NQ",
+                "playAt": 1723646897,
+                "duration": 169
+            },
+            "2": {
+                "id": "gKyWVLCjuYA",
+                "playAt": 1723648854,
+                "duration": 149
+            }
+        }
+    },
+    "2": {
+        "name": "From the Collection",
+        "videos": {
+            "1": {
+                "id": "7FHovSOq5H8",
+                "playAt": 1723646487,
+                "duration": 101
+            },
+            "2": {
+                "id": "Pe_npPwUZTA",
+                "playAt": 1723648914,
+                "duration": 86
+            }
+        }
+    }
+}

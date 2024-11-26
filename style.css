@@ -162,7 +162,7 @@ body {
     bottom: 2rem;
     right: 2rem;
     z-index: 19;
-    display: none;
+    display: flex;
     flex-direction: column;
     justify-content: flex-start;
     padding: 1rem;
