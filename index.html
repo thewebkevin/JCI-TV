@@ -7,17 +7,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;700&display=swap">
-    <title>YTCH</title>
+    <title>JCI-TV</title>
     <meta name="description" content="Watch Youtube Channels">
     <link rel="stylesheet" href="style.css">
     <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 
 <body>
     <div id="player"></div>
-    <div class="static-noise"></div>
+    <div id="twitch-player"></div>
+    <div id="static-noise" class="static-noise"></div>
     <div class="power-screen"></div>
     <div class="smpte">
         <div class="bar bar-1"></div>
@@ -33,9 +37,9 @@
             <div class="close" onclick="toggleInfo()"><img src="icons/x.svg"></div>
             <div class="content">
                 <div class="title">Contact</div>
-                <div class="text">ytchxyz@gmail.com</div>
+                <div class="text">test@gmail.com</div>
                 <div class="title">Support</div>
-                <div class="text">bc1q4s2f6df2cqa8stenwp8y5tlmd5pywy8dwqqxvh</div>
+                <div class="text">Test</div>
             </div>
         </div>
     </div>
@@ -61,6 +65,7 @@
     <div class="channel-name"></div>
     <div class="title" id="title"></div>
 	<script src="main.js"></script>
+    <script src= "https://player.twitch.tv/js/embed/v1.js"></script>
 </body>
 
 </html>

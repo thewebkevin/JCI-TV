@@ -1,33 +1,42 @@
+// DOM elements
 let staticNoise = document.querySelector(".static-noise");
 let smpte = document.querySelector(".smpte");
 let channelName = document.querySelector(".channel-name");
 let muteIcon = document.querySelector(".muteIcon");
 let videoId = document.querySelector(".video-id");
-let control = document.querySelector(".control");
 let powerScreen = document.querySelector(".power-screen");
 let info = document.querySelector(".info");
-let player, playingNow, playingNowOrder, startAt, vids;
+
+// Player and video variables
+let player, playingNow, startAt, vids;
 let channelNumber = 1;
 let isMin = false, isMuted = true, isOn = true, showInfo = false;
 
-let watchHistory = {};
-
+// Initialize stored channel number
 if (localStorage.getItem("storedChannelNumber") === null) {
     channelNumber = 1;
     localStorage.setItem("storedChannelNumber", 1);
 } else {
     channelNumber = Number(localStorage.getItem("storedChannelNumber"));
-}
-
-function getChannelName(channel) {
-    let name = "...";
-    switch (channel) {
-        case 1: name = "WWII in 2"; break;
-        case 2: name = "From the Collection"; break;
+    // Ensure the stored channel number is valid
+    if (!vids || !vids[channelNumber]) {
+        channelNumber = 1;
+        localStorage.setItem("storedChannelNumber", 1);
     }
-    return name;
 }
 
+/**
+ * Get the name of the channel.
+ * @param {number} channel - The channel number.
+ * @returns {string} - The name of the channel.
+ */
+function getChannelName(channel) {
+    return vids[channel] ? vids[channel].name : "...";
+}
+
+/**
+ * Resize the YouTube player to fit the screen.
+ */
 function resizePlayer() {
     let p = document.querySelector("#player");
     p.style.top = - window.innerHeight * 0.5 + "px";
@@ -35,12 +44,20 @@ function resizePlayer() {
     player.setSize(Math.min(window.innerHeight * 1.777, window.innerWidth), window.innerHeight * 2);
 }
 
+/**
+ * Fetch the list of videos from list.json.
+ */
 function getList() {
     fetch('./list.json')
         .then(response => response.json())
         .then(data => {
             vids = data;
             console.log("Loaded video list:", vids); // Check if vids is populated correctly
+            // Ensure the stored channel number is valid after loading the list
+            if (!vids[channelNumber]) {
+                channelNumber = 1;
+                localStorage.setItem("storedChannelNumber", 1);
+            }
             playChannel(channelNumber, false);
         })
         .catch(error => console.error('Error loading list.json:', error));
@@ -49,9 +66,23 @@ function getList() {
 let currentChannel = null;
 let currentVideoIndex = 0;
 
+/**
+ * Show the channel name briefly.
+ */
+function showChannelNameBriefly() {
+    channelName.style.opacity = 1;
+    setTimeout(() => {
+        channelName.style.opacity = 0;
+    }, 3000); // Show for 3 seconds
+}
+
+/**
+ * Play a specific channel.
+ * @param {number} ch - The channel number.
+ * @param {boolean} s - A flag indicating whether to start the channel.
+ */
 function playChannel(ch, s) {
     currentChannel = ch;
-    currentVideoIndex = 0;
     console.log("Playing channel:", ch);
     
     if (vids && vids[ch]) {
@@ -59,6 +90,8 @@ function playChannel(ch, s) {
         console.log("Videos for channel:", channelVideos);
 
         if (channelVideos.length > 0) {
+            // Pick a random video
+            currentVideoIndex = Math.floor(Math.random() * channelVideos.length);
             let video = channelVideos[currentVideoIndex];
             console.log("Loading video:", video);
             
@@ -80,8 +113,28 @@ function playChannel(ch, s) {
     }
     
     channelName.textContent = getChannelName(ch);
+    showChannelNameBriefly(); // Show channel name briefly
 }
 
+// Function to switch to the next video in the current channel
+function switchToNextVideo() {
+    let channelVideos = Object.values(vids[currentChannel].videos);
+    currentVideoIndex++;
+    if (currentVideoIndex >= channelVideos.length) {
+        currentVideoIndex = 0; // Restart from the first video
+    }
+    let nextVideo = channelVideos[currentVideoIndex];
+    playingNow = nextVideo.id;
+    startAt = 0;
+    player.loadVideoById(playingNow, startAt);
+    player.setVolume(100);
+    player.setPlaybackRate(1);
+    
+    // Update the title
+    document.getElementById('title').textContent = nextVideo.title;
+}
+
+// YouTube API script setup
 var scriptUrl = 'https://www.youtube.com/s/player/d2e656ee/www-widgetapi.vflset/www-widgetapi.js';
 try {
     var ttPolicy = window.trustedTypes.createPolicy('youtube-widget-api', {
@@ -142,6 +195,9 @@ if (!YT.loading) {
     }());
 };
 
+/**
+ * Initialize the YouTube player when the API is ready.
+ */
 function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         height: 400,
@@ -171,41 +227,51 @@ function onYouTubeIframeAPIReady() {
     }, true);
 }
 
+/**
+ * Handle errors from the YouTube player.
+ * @param {Object} event - The error event.
+ */
 function onErrorOccured(event) {
     console.error(event.data);
 }
 
-function onPlayerReady(event) {
-    getList();
+/**
+ * Hide the static noise overlay.
+ */
+function hideStaticNoise() {
+    staticNoise.style.display = "none";
 }
 
+/**
+ * Handle the YouTube player ready event.
+ * @param {Object} event - The ready event.
+ */
+function onPlayerReady(event) {
+    hideStaticNoise();
+    getList();
+    showChannelNameBriefly(); // Show channel name briefly on load
+}
+
+/**
+ * Handle state changes in the YouTube player.
+ * @param {Object} event - The state change event.
+ */
 function onPlayerStateChange(event) {
     if (event.data === YT.PlayerState.ENDED) {
-        let channelVideos = Object.values(vids[currentChannel].videos); // Assuming currentChannel is the active channel
-        currentVideoIndex++;
-        if (currentVideoIndex >= channelVideos.length) {
-            currentVideoIndex = 0; // Restart from the first video
-        }
-        let nextVideo = channelVideos[currentVideoIndex];
-        playingNow = nextVideo.id;
-        startAt = 0;
-        player.loadVideoById(playingNow, startAt);
-        player.setVolume(100);
-        player.setPlaybackRate(1);
-        
-        // Update the title
-        document.getElementById('title').textContent = nextVideo.title;
+        switchToNextVideo();
     }
 }
 
+/**
+ * Handle autoplay blocked event.
+ */
 function onAutoplayBlocked() {
     console.log("Autoplay blocked!");
 }
 
-function onPlayerReady(event) {
-    getList();
-}
-
+/**
+ * Toggle the mute state of the player.
+ */
 function toggleMute() {
     if (player.isMuted()) {
         player.unMute();
@@ -218,6 +284,10 @@ function toggleMute() {
     }
 }
 
+/**
+ * Switch to a different channel.
+ * @param {number} a - The channel offset.
+ */
 function switchChannel(a) {
     if (isOn) {
         player.stopVideo();
@@ -233,6 +303,9 @@ function switchChannel(a) {
     }
 }
 
+/**
+ * Toggle the control panel visibility.
+ */
 function toggleControl() {
     let min = document.querySelectorAll(".min");
     let minimize = document.querySelector(".minimize");
@@ -254,8 +327,10 @@ function toggleControl() {
     }
 }
 
+/**
+ * Toggle the power state of the player.
+ */
 function togglePower() {
-    let powerButton = document.querySelector(".power-button"); // Assuming the power button has a class of .power-button
     if (isOn) {
         isOn = false;
         player.pauseVideo();
@@ -268,6 +343,9 @@ function togglePower() {
     }
 }
 
+/**
+ * Toggle the info panel visibility.
+ */
 function toggleInfo() {
     if (showInfo) {
         showInfo = false;

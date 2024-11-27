@@ -1,16 +1,30 @@
 {
     "1": {
-        "name": "WWII in 2",
+        "name": "JCI-TV",
         "videos": {
             "1": {
                 "id": "4yjqPlJ88NQ",
-                "playAt": 1723646897,
-                "duration": 169
+                "platform": "youtube"
             },
             "2": {
                 "id": "gKyWVLCjuYA",
-                "playAt": 1723648854,
-                "duration": 149
+                "platform": "youtube"
+            },
+            "3": {
+                "id": "4aGLmXKsrSA",
+                "platform": "youtube"
+            },
+            "4": {
+                "id": "nRLbuCG5Z0",
+                "platform": "youtube"
+            },
+            "5": {
+                "id": "33ue4bmbb6k",
+                "platform": "youtube"
+            },
+            "6": {
+                "id": "jY1sgRa_7y8",
+                "platform": "youtube"
             }
         }
     },
@@ -19,13 +33,41 @@
         "videos": {
             "1": {
                 "id": "7FHovSOq5H8",
-                "playAt": 1723646487,
-                "duration": 101
+                "platform": "youtube"
             },
             "2": {
                 "id": "Pe_npPwUZTA",
-                "playAt": 1723648914,
-                "duration": 86
+                "platform": "youtube"
+            }
+        }
+    },
+    "3": {
+        "name": "Lofi Girl",
+        "videos": {
+            "1": {
+                "id": "4xDzrJKXOOY",
+                "platform": "youtube"
+            }
+        }
+    },
+    "4": {
+        "name": "International Conference on WWII",
+        "videos": {
+            "1": {
+                "id": "8fzu7Z7L7Tg",
+                "platform": "youtube"
+            },
+            "2": {
+                "id": "_Q3fZRCrFRs",
+                "platform": "youtube"
+            },
+            "3": {
+                "id": "Ip3S_EBI6nY",
+                "platform": "youtube"
+            },
+            "4": {
+                "id": "lx76Yjxiq1I",
+                "platform": "youtube"
             }
         }
     }
