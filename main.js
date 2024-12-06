@@ -114,6 +114,15 @@ function playChannel(ch, s) {
     
     channelName.textContent = getChannelName(ch);
     showChannelNameBriefly(); // Show channel name briefly
+    videoId.textContent = `${playingNow}`;
+    videoId.onclick = () => {
+        const videoUrl = `https://www.youtube.com/watch?v=${playingNow}`;
+        navigator.clipboard.writeText(videoUrl).then(() => {
+            alert("Video URL copied to clipboard!");
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    };
 }
 
 // Function to switch to the next video in the current channel

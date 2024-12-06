@@ -4,27 +4,28 @@
         "videos": {
             "1": {
                 "id": "4yjqPlJ88NQ",
-                "platform": "youtube"
+                "platform": "youtube",
+                "title": "Kristallnacht: The Night of Broken Glass | WWII IN 2"
             },
             "2": {
                 "id": "gKyWVLCjuYA",
-                "platform": "youtube"
+                "platform": "youtube",
+                "title": "MacArthur's Return to the Philippines | WWII IN 2"
             },
             "3": {
                 "id": "4aGLmXKsrSA",
-                "platform": "youtube"
+                "platform": "youtube",
+                "title": "Lend Lease to the Eastern Front | WWII In 2"
             },
             "4": {
-                "id": "nRLbuCG5Z0",
-                "platform": "youtube"
+                "id": "e1En77-0ig8",
+                "platform": "youtube",
+                "title": "The Attack on Pearl Harbor | WWII IN 2"
             },
             "5": {
-                "id": "33ue4bmbb6k",
-                "platform": "youtube"
-            },
-            "6": {
                 "id": "jY1sgRa_7y8",
-                "platform": "youtube"
+                "platform": "youtube",
+                "title": "Airborne Invasion on D-Day | WWII IN 2"
             }
         }
     },
@@ -33,11 +34,13 @@
         "videos": {
             "1": {
                 "id": "7FHovSOq5H8",
-                "platform": "youtube"
+                "platform": "youtube",
+                "title": "Tuskegee Airmen | FROM THE COLLECTION"
             },
             "2": {
                 "id": "Pe_npPwUZTA",
-                "platform": "youtube"
+                "platform": "youtube",
+                "title": "Purple Heart | FROM THE COLLECTION"
             }
         }
     },
@@ -45,8 +48,9 @@
         "name": "Lofi Girl",
         "videos": {
             "1": {
-                "id": "4xDzrJKXOOY",
-                "platform": "youtube"
+                "id": "pfiCNAc2AgU",
+                "platform": "youtube",
+                "title": "christmas lofi radio🎄"
             }
         }
     },
@@ -55,19 +59,23 @@
         "videos": {
             "1": {
                 "id": "8fzu7Z7L7Tg",
-                "platform": "youtube"
+                "platform": "youtube",
+                "title": "'Intelligence in the Ardennes' with Gregory Fontenot, Bradley W. Hart"
             },
             "2": {
                 "id": "_Q3fZRCrFRs",
-                "platform": "youtube"
+                "platform": "youtube",
+                "title": "'Untold Heroism of the Battle of the Bulge' with John C. McMannus, Michael S. Bell"
             },
             "3": {
                 "id": "Ip3S_EBI6nY",
-                "platform": "youtube"
+                "platform": "youtube",
+                "title": " 'Air War Over the Ardennes' with Brian D. Laslie, John Curatola & Sean Scanlon "
             },
             "4": {
                 "id": "lx76Yjxiq1I",
-                "platform": "youtube"
+                "platform": "youtube",
+                "title": "'Bernard Montgomery and the Americans' with Nigel Hamilton, Michael S. Bell"
             }
         }
     }
