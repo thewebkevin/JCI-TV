@@ -51,10 +51,6 @@ Open the `index.html` file in your web browser to start the application.
 
 Contributions are welcome! Please fork the repository and create a pull request with your changes.
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgements
 
 - This project is inspired by https://ytch.xyz/; I am not the original author of that project.
