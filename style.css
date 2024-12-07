@@ -13,15 +13,6 @@ body {
     background-color: #000;
 }
 
-#twitch-player {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    z-index: 10;
-}
-
 .static-noise {
     position: fixed;
     top: 0;
@@ -154,7 +145,7 @@ body {
     color: #000;
 }
 
-.info .wrapper .content .title {
+.info .wrapper .content .infotitle {
     font-size: 1.2rem;
     color: #888;
     margin-bottom: 0.3rem;
